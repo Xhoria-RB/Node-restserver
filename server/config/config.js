@@ -20,6 +20,6 @@ let urlDB;
 if (process.env.NODE_ENV === 'dev') {
     urlDB = 'mongodb://localhost:27017/cafe';
 } else {
-    urlDB = 'mongodb://cafe-user:A123456789@ds219672.mlab.com:19672/cafe';
+    urlDB = process.env.MONGO_URI;
 }
 process.env.URLDB = urlDB; //En el proccess no existe URLDB, asi que es una variable creada para almacenar urlDB
