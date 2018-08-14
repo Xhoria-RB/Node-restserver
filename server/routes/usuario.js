@@ -3,10 +3,22 @@ const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const app = express();
 const Usuario = require('../models/usuario');
+const { verifyToken, verifyAdmin_Role } = require('../middlewares/authentication');
 
 
 // Get
-app.get('/usuario', function(req, res) {
+//verifyToken no se hace llamada a la funcion porque se está solo asignando un middleware a la peticion get, no haciendo
+//una llamada a la función
+app.get('/usuario', verifyToken, (req, res) => {
+
+
+    // return res.json({
+    //     usuario: req.usuario,
+    //     nombre: req.usuario.nombre,
+    //     email: req.usuario.email,
+    //     role: req.usuario.role
+    // })
+
 
     let desde = req.query.desde || 0; //req.query busca los parametros opcionales pasados en la url>> url?[params]=[value]
     desde = Number(desde);
@@ -49,9 +61,9 @@ app.get('/usuario', function(req, res) {
 });
 
 
-
+//Crear usuario
 //Post
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verifyToken, verifyAdmin_Role], (req, res) => {
     let body = req.body;
 
     //Cada instancia de usuario tendra el modelo, de ahi podemos pasarle parametros al constructor
@@ -74,7 +86,7 @@ app.post('/usuario', function(req, res) {
         // usuario.password = null; Ver Schema para mas info
         res.json({
             ok: true,
-            usaurio: usuarioDB
+            usuario: usuarioDB
         });
     })
 
@@ -82,7 +94,7 @@ app.post('/usuario', function(req, res) {
 });
 
 //Put
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verifyToken, verifyAdmin_Role], (req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
 
@@ -111,7 +123,7 @@ app.put('/usuario/:id', function(req, res) {
 
 
 //Delete
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verifyToken, verifyAdmin_Role], (req, res) => {
     let id = req.params.id;
     let cambiaEstado = {
         estado: false
@@ -141,6 +153,7 @@ app.delete('/usuario/:id', function(req, res) {
 
     })
 });
+
 
 
 module.exports = app;
