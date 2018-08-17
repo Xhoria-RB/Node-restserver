@@ -36,3 +36,12 @@ if (process.env.NODE_ENV === 'dev') {
     urlDB = process.env.MONGO_URI;
 }
 process.env.URLDB = urlDB; //En el proccess no existe URLDB, asi que es una variable creada para almacenar urlDB
+
+
+/**
+ * Google ClientID
+ * 
+ * En heroku se declarará la variable CLIENT_ID para que tenga el id directamente en el backend
+ */
+
+process.env.CLIENT_ID = process.env.CLIENT_ID || '568154055703-0ajln0aa17cb1962av0kutjjsd3l2p8f.apps.googleusercontent.com';
