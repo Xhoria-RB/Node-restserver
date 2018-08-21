@@ -17,6 +17,8 @@ let verifyToken = (req, res, next) => {
             })
         }
         // EL decoded es el payload que obtenemos del token  y como mandamos el usuario en el payload podemos obtenerlo asi
+        //req.usuario no existe en el request, por ende aqui se crea una variable usuario en req y se le asigna el objeto 
+        //usuario del payload decodificado
         req.usuario = decoded.usuario;
         next(); //para que continue la ejecucion del programa
 

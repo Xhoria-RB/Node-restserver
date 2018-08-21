@@ -27,7 +27,7 @@ app.get('/usuario', verifyToken, (req, res) => {
     limite = Number(limite);
 
     Usuario.find({ estado: true }, 'nombre email role google img') //En el metodo find si no se especifica nada trae todo, sino busca segun lo especificado
-        // el string pasado como 2do argumento define los campos que se quieren desplegar en el objeto
+        // el string pasado como 2do argumento define los campos que se quieren desplegar en el objeto (projection en la api doc de Mongoose)
         .skip(desde) //Salta x cantidad de registros
         .limit(limite) //Establece un limite de registros al find
         .exec((err, usuarios) => { //Indica que se ejecutara 
@@ -54,7 +54,7 @@ app.get('/usuario', verifyToken, (req, res) => {
             })
 
 
-        })
+        });
 
 
 
@@ -84,6 +84,7 @@ app.post('/usuario', [verifyToken, verifyAdmin_Role], (req, res) => {
         }
         //funcion momentanea para que no salga el password
         // usuario.password = null; Ver Schema para mas info
+
         res.json({
             ok: true,
             usuario: usuarioDB
